@@ -1,0 +1,29 @@
+{
+  "name": "leavecode-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LeaveCode enterprise monorepo - Next.js frontend, Express backend, and shared TypeScript schemas",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace=@leavecode/frontend",
+    "dev:backend": "npm run dev --workspace=@leavecode/backend",
+    "dev": "npm run build:shared && concurrently -n \"FRONTEND,BACKEND\" -c \"cyan,magenta\" \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build:shared": "npm run build --workspace=@leavecode/shared",
+    "build:frontend": "npm run build --workspace=@leavecode/frontend",
+    "build:backend": "npm run build --workspace=@leavecode/backend",
+    "build": "npm run build:shared && npm run build:backend && npm run build:frontend",
+    "start:frontend": "npm run start --workspace=@leavecode/frontend",
+    "start:backend": "npm run start --workspace=@leavecode/backend",
+    "start": "concurrently -n \"FRONTEND,BACKEND\" -c \"cyan,magenta\" \"npm run start:frontend\" \"npm run start:backend\"",
+    "verify:seo": "node scripts/verify_technical_seo.js",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "clean": "node -e \"const fs = require('fs'); ['node_modules', 'apps/frontend/.next', 'apps/frontend/node_modules', 'apps/backend/dist', 'apps/backend/node_modules', 'packages/shared/dist', 'packages/shared/node_modules'].forEach(p => { if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true }); });\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
